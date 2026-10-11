@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطعم أبو علي</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    background: #171717;
+    color: #fff;
+    font-size: 16px;
+}
+
+header {
+    background: linear-gradient(135deg, #2b2118, #111);
+    text-align: center;
+    padding: 28px 15px;
+    border-bottom: 3px solid #ff9f1c;
+}
+
+header h1 {
+    color: #ff9f1c;
+    font-size: 30px;
+    margin: 5px;
+}
+
+header p {
+    color: #ddd;
+    font-size: 16px;
+}
+
+.search {
+    display: block;
+    width: 90%;
+    max-width: 450px;
+    margin: 25px auto;
+    padding: 13px;
+    border: 2px solid #ff9f1c;
+    border-radius: 12px;
+    background: #252525;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+h2 {
+    text-align: center;
+    color: #ff9f1c;
+    font-size: 23px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.item {
+    background: #252525;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #393939;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    border-color: #ff9f1c;
+}
+
+.item img {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+}
+
+.item-info {
+    padding: 15px;
+}
+
+.item h3 {
+    margin: 0 0 10px;
+    color: #ffbd59;
+    font-size: 19px;
+}
+
+.item p {
+    color: #ccc;
+    font-size: 15px;
+}
+
+.price {
+    color: #64df91;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.details-btn {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 8px;
+    background: #ff9f1c;
+    color: #171717;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.details-btn:hover {
+    background: #ffc15a;
+}
+
+/* نافذة تفاصيل الوجبة */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 20px;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #252525;
+    border: 1px solid #ff9f1c;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    position: relative;
+    margin: auto;
+}
+
+.modal-content img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.modal-content h2 {
+    color: #ff9f1c;
+}
+
+.modal-content p {
+    line-height: 1.9;
+    color: #eee;
+    font-size: 16px;
+}
+
+.close {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    border: none;
+    background: #ff9f1c;
+    color: #111;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 20px;
+    color: #bbb;
+    background: #101010;
+    border-top: 1px solid #333;
+}
+
+@media (max-width: 500px) {
+    header h1 { font-size: 25px; }
+    .menu { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍽️ مطعم أبو علي</h1>
+    <p>الطعم الأصيل.. والكرم العراقي الأصيل ❤️</p>
+    <p>أهلاً وسهلاً بيكم، اختاروا وجبتكم المفضلة!</p>
+</header>
+
+<input
+    class="search"
+    id="search"
+    type="text"
+    placeholder="🔍 ابحث عن وجبتك..."
+    oninput="searchMeals()"
+>
+
+<h2>🔥 قائمة الطعام</h2>
+
+<div class="menu" id="menu">
+
+    <div class="item"
+         data-name="برغر لحم"
+         onclick="showDetails(0)">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
+             alt="برغر لحم">
+        <div class="item-info">
+            <h3>🍔 برغر لحم</h3>
+            <p>برغر طازج بطعم مميز</p>
+            <p class="price">7,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+    <div class="item"
+         data-name="شاورما دجاج"
+         onclick="showDetails(1)">
+        <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=800&q=80"
+             alt="شاورما">
+        <div class="item-info">
+            <h3>🌯 شاورما دجاج</h3>
+            <p>شاورما مع صوصاتنا الخاصة</p>
+            <p class="price">4,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+    <div class="item"
+         data-name="بيتزا"
+         onclick="showDetails(2)">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+             alt="بيتزا">
+        <div class="item-info">
+            <h3>🍕 بيتزا</h3>
+            <p>جبن ذائب وعجينة لذيذة</p>
+            <p class="price">8,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+    <div class="item"
+         data-name="دجاج مقرمش"
+         onclick="showDetails(3)">
+        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80"
+             alt="دجاج مقرمش">
+        <div class="item-info">
+            <h3>🍗 دجاج مقرمش</h3>
+            <p>دجاج ذهبي ومقرمش</p>
+            <p class="price">6,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+    <div class="item"
+         data-name="بطاطا مقلية"
+         onclick="showDetails(4)">
+        <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80"
+             alt="بطاطا مقلية">
+        <div class="item-info">
+            <h3>🍟 بطاطا مقلية</h3>
+            <p>بطاطا ذهبية مع الصوص</p>
+            <p class="price">2,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+    <div class="item"
+         data-name="عصير برتقال"
+         onclick="showDetails(5)">
+        <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=800&q=80"
+             alt="عصير برتقال">
+        <div class="item-info">
+            <h3>🍹 عصير برتقال</h3>
+            <p>عصير منعش ولذيذ</p>
+            <p class="price">2,000 دينار</p>
+            <button class="details-btn">عرض التفاصيل</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- نافذة عرض التفاصيل -->
+<div class="modal" id="modal" onclick="closeOutside(event)">
+    <div class="modal-content">
+        <button class="close" onclick="closeModal()">×</button>
+        <img id="detailImage" src="" alt="صورة الوجبة">
+        <h2 id="detailName"></h2>
+        <p id="detailDescription"></p>
+        <p><strong style="color:#ffbd59">🧂 المكونات:</strong></p>
+        <p id="detailIngredients"></p>
+        <p class="price" id="detailPrice"></p>
+    </div>
+</div>
+
+<footer>
+    <p>❤️ مطعم أبو علي يرحب بيكم دائماً</p>
+    <p>جميع الحقوق محفوظة © 2026</p>
+</footer>
+
+<script>
+const meals = [
+    {
+        name: "🍔 برغر لحم",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+        description: "برغر لحم مشوي بطعم غني، يقدم بخبز طري وخضروات طازجة.",
+        ingredients: "لحم بقري، خبز برغر، خس، طماطم، جبن، صوص خاص.",
+        price: "7,000 دينار"
+    },
+    {
+        name: "🌯 شاورما دجاج",
+        image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=800&q=80",
+        description: "شاورما دجاج متبلة بتوابل لذيذة مع صوص شهي.",
+        ingredients: "دجاج، خبز، ثوم، مخلل، بهارات، صوص.",
+        price: "4,000 دينار"
+    },
+    {
+        name: "🍕 بيتزا",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+        description: "بيتزا ساخنة بجبن ذائب وعجينة شهية.",
+        ingredients: "عجينة، صلصة طماطم، جبن موزاريلا، زيتون، فلفل.",
+        price: "8,000 دينار"
+    },
+    {
+        name: "🍗 دجاج مقرمش",
+        image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80",
+        description: "قطع دجاج بتغليفة مقرمشة من الخارج وطرية من الداخل.",
+        ingredients: "دجاج، طحين، بهارات، ملح، فلفل، زيت.",
+        price: "6,000 دينار"
+    },
+    {
+        name: "🍟 بطاطا مقلية",
+        image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
+        description: "بطاطا مقلية ذهبية تقدم ساخنة مع الصوص.",
+        ingredients: "بطاطا، زيت، ملح، كاتشب أو صوص حسب الاختيار.",
+        price: "2,000 دينار"
+    },
+    {
+        name: "🍹 عصير برتقال",
+        image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=800&q=80",
+        description: "عصير برتقال منعش مناسب مع جميع الوجبات.",
+        ingredients: "برتقال طازج، ماء حسب الرغبة، ثلج اختياري.",
+        price: "2,000 دينار"
+    }
+];
+
+function showDetails(index) {
+    const meal = meals[index];
+
+    document.getElementById("detailImage").src = meal.image;
+    document.getElementById("detailName").textContent = meal.name;
+    document.getElementById("detailDescription").textContent =
+        meal.description;
+    document.getElementById("detailIngredients").textContent =
+        meal.ingredients;
+    document.getElementById("detailPrice").textContent =
+        "السعر: " + meal.price;
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function closeOutside(event) {
+    if (event.target.id === "modal") {
+        closeModal();
+    }
+}
+
+function searchMeals() {
+    const search = document.getElementById("search")
+        .value.trim().toLowerCase();
+
+    document.querySelectorAll(".item").forEach(item => {
+        const name = item.dataset.name.toLowerCase();
+        item.style.display = name.includes(search) ? "" : "none";
+    });
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") closeModal();
+});
+</script>
+
+</body>
+</html>
